@@ -37,7 +37,6 @@ class AESStego:
     def modPix(self,pix, data):
     
         datalist = self.genData(data)
-        print(datalist)
         lendata = len(datalist)
         imdata = iter(pix)
     
@@ -98,11 +97,8 @@ class AESStego:
     # Encode data into image
     def encode(self,data,datakey,path):
         image = Image.open(path, 'r')
-        print(data)
-        print(datakey)
         obj = AES.new(datakey.encode("utf8"), AES.MODE_CFB, 'This is an IV456'.encode("utf8"))
         data = obj.encrypt(data.encode("utf8"))
-        print(data)
         if (len(data) == 0):
             raise ValueError('Data is empty')
     
@@ -154,7 +150,6 @@ class Stego:
     def get_random_string(self,length):
         self.password_characters = string.ascii_letters + string.digits + string.punctuation
         self.key = ''.join(random.choice(self.password_characters) for i in range(length))
-        print("Random string password is:", self.key)
         return self.key;
    
     def getOriginalImage(self,path): 
@@ -175,7 +170,6 @@ class Stego:
         font = ImageFont.truetype("times.ttf", 16)
 
         drawer = ImageDraw.Draw(image_text)
-        print(self.original_image_width)
         margin = offset = 10
         for line in textwrap.wrap(text, width=200):
             drawer.text((margin,offset), line, font=font, align ="center",spacing=10)
@@ -214,17 +208,13 @@ class Stego:
                     decoded_msg_image.putpixel(coord,0)
                 else:
                     decoded_msg_image.putpixel(coord,1)
-        print(decoded_msg_image)
-        print(type(decoded_msg_image))
        
         decoded_msg_image.save('images/message.bmp')
         
     def image_to_byte_array(self,image:Image):
       imgByteArr = io.BytesIO()
-      print(image.format)
       image.save(imgByteArr, format=image.format)
       imgByteArr = imgByteArr.getvalue()
-      print(imgByteArr)
       return imgByteArr
 
     
@@ -407,8 +397,6 @@ class Ui_MainWindow(object):
             self.StegoImageSize.setStyleSheet("background-color: lightgreen")
             QMessageBox.about(None, "Info", "Encryption is successful")
         if self.radioButton.isChecked():
-            print("AES + LSB")
-            
             if(self.plainTextEdit.toPlainText()==""):
                 QMessageBox.about(None, "Title", "Enter Plain Text")
                 return
@@ -420,14 +408,11 @@ class Ui_MainWindow(object):
                 return
             
             data = s2.encode(self.plainTextEdit.toPlainText(),self.keyTextBox.text(),self.imagepath_2.text())
-            print("data")
-            print(data)
             img = Image.open('images/aes.png')
             width, height = img.size
             self.StegoImageSize.setText(str(width * height)+" pixels")
             self.StegoImageSize.setStyleSheet("background-color: lightgreen")
             self.plainTextEdit.setPlainText("")
-            print(data)
             self.plainTextEdit_2.setPlainText(str(data))
             QMessageBox.about(None, "Info", "Encryption is successful")
         
@@ -490,9 +475,7 @@ class Ui_MainWindow(object):
         fname = QFileDialog.getOpenFileName(None, 'Open file','c:\\', "Image files (*.txt)")
         file1 = open(fname[0],"r")
         plainText = file1.read() 
-        print( plainText)
         self.plainTextEdit.setPlainText(plainText)
-        print(self.plainTextEdit.toPlainText())
         
     def get_key(self):
         if self.radioButton.isChecked():
