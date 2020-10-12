@@ -200,11 +200,12 @@ class Stego:
         self.stego_image.save('images/o1.png')
 
     
-    def unhide(self):
+    def unhide(self,originalPath, stegoPath):
        
         
-        output_image = Image.open('images/o1.png','r')
-        decoded_msg_image = Image.new('1',(self.original_image_width,self.original_image_height),255)
+        output_image = Image.open(stegoPath,'r')
+        original_image = Image.open(originalPath,'r')
+        decoded_msg_image = Image.new('1',(original_image.width,original_image.height),255)
         for x in range(self.original_image_width):
             for y in range(self.original_image_height):
                 coord = x,y
@@ -236,12 +237,6 @@ class Ui_MainWindow(object):
         MainWindow.resize(1519, 858)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-                                                                
-                                                                 
-                            
-                                                                                                
-                                  
-                                             
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(40, 10, 1031, 251))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -250,24 +245,16 @@ class Ui_MainWindow(object):
         self.keyTextBox = QtWidgets.QLineEdit(self.frame)
         self.keyTextBox.setGeometry(QtCore.QRect(140, 150, 221, 31))
         self.keyTextBox.setObjectName("keyTextBox")
-        self.keyTextBox.setMaxLength(16)                                
+        self.keyTextBox.setMaxLength(16)                                                            
         self.key = QtWidgets.QLabel(self.frame)
         self.key.setGeometry(QtCore.QRect(10, 140, 101, 31))
         self.key.setObjectName("key")
         self.plainText = QtWidgets.QLabel(self.frame)
         self.plainText.setGeometry(QtCore.QRect(20, 40, 101, 31))
         self.plainText.setObjectName("plainText")
-                                                            
-                                                                       
-                                           
-                                                         
         self.generateKey = QtWidgets.QPushButton(self.frame)
         self.generateKey.setGeometry(QtCore.QRect(390, 150, 141, 31))
         self.generateKey.setObjectName("generateKey")
-        
-                                                      
-                                                                   
-                                                   
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.frame)
         self.plainTextEdit.setGeometry(QtCore.QRect(140, 10, 221, 121))
         self.plainTextEdit.setObjectName("plainTextEdit")
@@ -278,7 +265,7 @@ class Ui_MainWindow(object):
         self.cipherText.setGeometry(QtCore.QRect(620, 40, 101, 31))
         self.cipherText.setObjectName("cipherText")
         self.decrypt = QtWidgets.QPushButton(self.frame)
-        self.decrypt.setGeometry(QtCore.QRect(880, 200, 111, 51))
+        self.decrypt.setGeometry(QtCore.QRect(880, 190, 111, 51))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("images/decrypt.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.decrypt.setIcon(icon)
@@ -286,13 +273,12 @@ class Ui_MainWindow(object):
         self.radioButton_2 = QtWidgets.QRadioButton(self.frame)
         self.radioButton_2.setGeometry(QtCore.QRect(390, 210, 119, 23))
         self.radioButton_2.setObjectName("radioButton_2")
-        
         self.radioButton = QtWidgets.QRadioButton(self.frame)
         self.radioButton.setGeometry(QtCore.QRect(220, 210, 119, 23))
         self.radioButton.setObjectName("radioButton")
-        self.radioButton.setChecked(True)
+        self.radioButton.setChecked(True)         
         self.encrypt = QtWidgets.QPushButton(self.frame)
-        self.encrypt.setGeometry(QtCore.QRect(720, 200, 111, 51))
+        self.encrypt.setGeometry(QtCore.QRect(720, 190, 111, 51))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("images/encrypt.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.encrypt.setIcon(icon1)
@@ -300,34 +286,36 @@ class Ui_MainWindow(object):
         self.plainTextEdit_2 = QtWidgets.QPlainTextEdit(self.frame)
         self.plainTextEdit_2.setGeometry(QtCore.QRect(720, 10, 271, 141))
         self.plainTextEdit_2.setObjectName("plainTextEdit_2")
-        self.plainTextEdit_2.setReadOnly(True)
+        self.plainTextEdit_2.setReadOnly(True)      
         self.key_2 = QtWidgets.QLabel(self.frame)
         self.key_2.setGeometry(QtCore.QRect(10, 200, 131, 31))
         self.key_2.setObjectName("key_2")
         self.inputImage = QtWidgets.QLabel(self.centralwidget)
-        self.inputImage.setGeometry(QtCore.QRect(50, 370, 511, 391))
+        self.inputImage.setGeometry(QtCore.QRect(50, 370, 1001, 421))
         self.inputImage.setText("")
         self.inputImage.setObjectName("inputImage")
-        self.OutputImage = QtWidgets.QLabel(self.centralwidget)
-        self.OutputImage.setGeometry(QtCore.QRect(640, 380, 481, 381))
-        self.OutputImage.setText("")
-        self.OutputImage.setObjectName("OutputImage")
+                                                               
+                                                                      
+                                    
+                                                     
         self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(210, 280, 701, 81))
+        self.widget.setGeometry(QtCore.QRect(190, 260, 811, 131))
         self.widget.setObjectName("widget")
         self.imagepath_2 = QtWidgets.QLineEdit(self.widget)
         self.imagepath_2.setGeometry(QtCore.QRect(20, 20, 441, 31))
         self.imagepath_2.setObjectName("imagepath_2")
+        self.imagepath_2.setReadOnly(True)
         self.pushButton = QtWidgets.QPushButton(self.widget)
-        self.pushButton.setGeometry(QtCore.QRect(500, 20, 181, 34))
+        self.pushButton.setGeometry(QtCore.QRect(500, 20, 271, 34))
         self.pushButton.setObjectName("pushButton")
-                                                                     
-                                                                    
-                                                     
-                                                                       
-                                                                      
-                                                         
-                                           
+        self.pushButton_3 = QtWidgets.QPushButton(self.widget)
+        self.pushButton_3.setGeometry(QtCore.QRect(500, 70, 271, 34))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.imagepath_3 = QtWidgets.QLineEdit(self.widget)
+        self.imagepath_3.setGeometry(QtCore.QRect(20, 70, 441, 31))
+        self.imagepath_3.setText("")
+        self.imagepath_3.setObjectName("imagepath_3")
+        self.imagepath_3.setReadOnly(True)
         self.plainImageSize = QtWidgets.QLabel(self.centralwidget)
         self.plainImageSize.setGeometry(QtCore.QRect(1290, 90, 131, 31))
         self.plainImageSize.setText("")
@@ -358,13 +346,25 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+
         self.encrypt.clicked.connect(self.encrypt_InputImage)
         self.decrypt.clicked.connect(self.show_OutputImage)
-        self.pushButton.clicked.connect(self.getImage)
+        self.pushButton.clicked.connect(self.originalImagePath)
+        self.pushButton_3.clicked.connect(self.stegoImagePath)
         self.generateKey.clicked.connect(self.get_key)
+        self.pushButton_2.clicked.connect(self.browse_plainText)
+        
+        self.encrypt.setStyleSheet("background-color : lightblue")
+        self.decrypt.setStyleSheet("background-color : lightblue")
+        self.pushButton.setStyleSheet("background-color : lightblue")
+        self.pushButton_3.setStyleSheet("background-color : lightblue")
+        self.generateKey.setStyleSheet("background-color : lightblue")
+        self.pushButton_2.setStyleSheet("background-color : lightblue")
         
         self.radioButton_2.clicked.connect(self.enable_disableButton)
         self.radioButton.clicked.connect(self.enable_disableButton)
+        
+        
         
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -379,7 +379,9 @@ class Ui_MainWindow(object):
         self.cipherText.setText(_translate("MainWindow", "Cipher Text"))
         self.pushButton_2.setText(_translate("MainWindow", "Browse Secret Message"))
         self.decrypt.setText(_translate("MainWindow", "Decrypt"))
-        self.pushButton.setText(_translate("MainWindow", "Browse Image Encryption/Decryption"))
+        self.key_2.setText(_translate("MainWindow", "Select the Method"))
+        self.pushButton.setText(_translate("MainWindow", "Browse OriginalImage"))
+        self.pushButton_3.setText(_translate("MainWindow", "Browse StegoImage"))
         self.radioButton.setText(_translate("MainWindow", "AES + LSB"))
         self.radioButton_2.setText(_translate("MainWindow", "New Algo"))
         self.plainImageSize_2.setText(_translate("MainWindow", "Original Image Size : "))
@@ -388,7 +390,13 @@ class Ui_MainWindow(object):
         
     def encrypt_InputImage(self):
         if self.radioButton_2.isChecked(): 
-            print(self.plainTextEdit.toPlainText())
+            if(self.plainTextEdit.toPlainText()==""):
+                QMessageBox.about(None, "Title", "Enter Plain Text")
+                return
+            elif(self.imagepath_2.text()==""):
+                QMessageBox.about(None, "Title", "Choose Input Image")
+                return
+            
             s1.encoded_message_image = s1.generate_encoded_image_from_text(self.plainTextEdit.toPlainText())
             s1.hide()
             self.inputImage.setPixmap(QtGui.QPixmap('images/o1.png'))
@@ -397,8 +405,19 @@ class Ui_MainWindow(object):
             width, height = img.size
             self.StegoImageSize.setText(str(width * height)+" pixels")
             self.StegoImageSize.setStyleSheet("background-color: lightgreen")
+            QMessageBox.about(None, "Info", "Encryption is successful")
         if self.radioButton.isChecked():
             print("AES + LSB")
+            
+            if(self.plainTextEdit.toPlainText()==""):
+                QMessageBox.about(None, "Title", "Enter Plain Text")
+                return
+            elif(self.imagepath_2.text()==""):
+                QMessageBox.about(None, "Title", "Choose Input Image")
+                return
+            elif(self.keyTextBox.text()==""):
+                QMessageBox.about(None, "Title", "Enter the Key")
+                return
             
             data = s2.encode(self.plainTextEdit.toPlainText(),self.keyTextBox.text(),self.imagepath_2.text())
             print("data")
@@ -410,34 +429,70 @@ class Ui_MainWindow(object):
             self.plainTextEdit.setPlainText("")
             print(data)
             self.plainTextEdit_2.setPlainText(str(data))
-            
+            QMessageBox.about(None, "Info", "Encryption is successful")
         
     def show_OutputImage(self):
         if self.radioButton_2.isChecked(): 
-            s1.unhide()
+            if(self.imagepath_2.text()==""):
+                QMessageBox.about(None, "Title", "Choose Original Image")
+                return
+            elif(self.imagepath_3.text()==""):
+                QMessageBox.about(None, "Title", "Choose Stego Image")
+                return
+            
+            s1.unhide(self.imagepath_2.text(),self.imagepath_3.text())
             self.inputImage.setPixmap(QtGui.QPixmap('images/message.bmp'))
             self.inputImage.adjustSize()
             img = Image.open('images/message.bmp')
             width, height = img.size
             self.plainText_4.setText(str(width * height)+" pixels")
-            self.plainText_4.setStyleSheet("background-color: lightgreen") 
+            self.plainText_4.setStyleSheet("background-color: lightgreen")
+            QMessageBox.about(None, "Info", "Decryption is successful") 
         if self.radioButton.isChecked():
-            data = s2.decode(self.keyTextBox.text(),self.imagepath_2.text())
+            if(self.keyTextBox.text()==""):
+                QMessageBox.about(None, "Title", "Enter the Key")
+                return
+            elif(self.imagepath_3.text()==""):
+                QMessageBox.about(None, "Title", "Choose Stego Image")
+                return
+            self.pushButton_3.setEnabled(False)
+            data = s2.decode(self.keyTextBox.text(),self.imagepath_3.text())
             self.plainTextEdit.setPlainText(data)
             self.inputImage.setText(data)
             self.inputImage.setWordWrap(True)
             self.inputImage.adjustSize()
+            QMessageBox.about(None, "Info", "Decryption is successful") 
         
     def getImage(self):
         fname = QFileDialog.getOpenFileName(None, 'Open file','c:\\', "Image files (*.jpg *.png)")
-        s1.getOriginalImage(fname[0])
-        self.imagepath_2.setText(fname[0]);
-        self.inputImage.setPixmap(QtGui.QPixmap(fname[0]))
+        return fname[0]
+        
+    def originalImagePath(self):
+        imagepath = self.getImage()
+        s1.getOriginalImage(imagepath)
+        self.imagepath_2.setText(imagepath);
+        self.inputImage.setPixmap(QtGui.QPixmap(imagepath))
         self.inputImage.adjustSize()
-        img = Image.open(fname[0])
+        img = Image.open(imagepath)
         width, height = img.size
         self.plainImageSize.setText(str(width * height)+" pixels")
         self.plainImageSize.setStyleSheet("background-color: lightgreen") 
+    
+    def stegoImagePath(self):
+        imagepath = self.getImage()
+        self.imagepath_3.setText(imagepath);
+        img = Image.open(imagepath)
+        width, height = img.size
+        self.StegoImageSize.setText(str(width * height)+" pixels")
+        self.StegoImageSize.setStyleSheet("background-color: lightgreen") 
+    
+    def browse_plainText(self):
+        fname = QFileDialog.getOpenFileName(None, 'Open file','c:\\', "Image files (*.txt)")
+        file1 = open(fname[0],"r")
+        plainText = file1.read() 
+        print( plainText)
+        self.plainTextEdit.setPlainText(plainText)
+        print(self.plainTextEdit.toPlainText())
         
     def get_key(self):
         if self.radioButton.isChecked():
@@ -449,12 +504,28 @@ class Ui_MainWindow(object):
             self.keyTextBox.setText("")
             self.plainTextEdit.setPlainText("")
             self.plainTextEdit_2.setPlainText("")
+            self.plainImageSize.setText("")
+            self.StegoImageSize.setText("")
+            self.plainText_4.setText("")
+            self.imagepath_2.setText("")
+            self.imagepath_3.setText("")
+            self.plainImageSize.setStyleSheet("")
+            self.StegoImageSize.setStyleSheet("")
+            self.plainText_4.setStyleSheet("")
             self.generateKey.setEnabled(False)
             self.keyTextBox.setEnabled(False)
         if self.radioButton.isChecked():
             self.keyTextBox.setText("")
             self.plainTextEdit.setPlainText("")
             self.plainTextEdit_2.setPlainText("")
+            self.plainImageSize.setText("")
+            self.StegoImageSize.setText("")
+            self.imagepath_2.setText("")
+            self.imagepath_3.setText("")
+            self.plainText_4.setText("")
+            self.plainImageSize.setStyleSheet("")
+            self.StegoImageSize.setStyleSheet("")
+            self.plainText_4.setStyleSheet("")
             self.generateKey.setEnabled(True)
             self.keyTextBox.setEnabled(True)
 
