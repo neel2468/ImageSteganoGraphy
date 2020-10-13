@@ -42,7 +42,7 @@ class Stego:
         
 
     def generate_encoded_image_from_text(self,text):
-        image_text = Image.new('1',(self.original_image_width,self.original_image_height),1)
+        image_text = Image.new('L',(self.original_image_width,self.original_image_height),255)
         font = ImageFont.truetype("times.ttf", 15)
 
         drawer = ImageDraw.Draw(image_text)
@@ -64,7 +64,12 @@ class Stego:
                 blue = self.original_image.getpixel(coord)[2]
                 
                 if self.encoded_message_image.getpixel(coord) == 0:
-                    self.stego_image.putpixel(coord,((red+1),green,blue))
+                    if red == 0:
+                        red = red + 1
+                        self.stego_image.putpixel(coord,(red,green,blue))
+                    else:
+                        red = red - 1
+                        self.stego_image.putpixel(coord,(red,green,blue))
                 else:
                     self.stego_image.putpixel(coord,(red,green,blue))
 
@@ -75,29 +80,25 @@ class Stego:
        
         
         output_image = Image.open('o1.png','r')
-        decoded_msg_image = Image.new('1',(self.original_image_width,self.original_image_height),255)
+        decoded_msg_image = Image.new('L',(self.original_image_width,self.original_image_height))
         for x in range(self.original_image_width):
             for y in range(self.original_image_height):
                 coord = x,y
                 red = output_image.getpixel(coord)[0]
-                if red - self.original_image.getpixel(coord)[0] > 0:
+                if red - self.original_image.getpixel(coord)[0] == 1 or self.original_image.getpixel(coord)[0] - red == 1:
                     decoded_msg_image.putpixel(coord,0)
                 else:
-                    decoded_msg_image.putpixel(coord,1)
+                    decoded_msg_image.putpixel(coord,255)
         
-        print(decoded_msg_image)
-        print(type(decoded_msg_image))
-       
-        decoded_msg_image.save('message.bmp')
+
+        decoded_msg_image.save('message.png')
      #   self.image_to_byte_array(decoded_msg_image);
      #   print(type(decoded_msg_image))
         
     def image_to_byte_array(self,image:Image):
       imgByteArr = io.BytesIO()
-      print(image.format)
       image.save(imgByteArr, format=image.format)
       imgByteArr = imgByteArr.getvalue()
-      print(imgByteArr)
       return imgByteArr
 
 
