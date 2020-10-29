@@ -17,9 +17,9 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>10</y>
-      <width>1031</width>
+      <x>30</x>
+      <y>30</y>
+      <width>1021</width>
       <height>251</height>
      </rect>
     </property>
@@ -114,23 +114,6 @@
       <string>Cipher Text</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="decrypt">
-     <property name="geometry">
-      <rect>
-       <x>880</x>
-       <y>190</y>
-       <width>111</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Decrypt</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>images/decrypt.png</normaloff>images/decrypt.png</iconset>
-     </property>
-    </widget>
     <widget class="QRadioButton" name="radioButton_2">
      <property name="geometry">
       <rect>
@@ -157,23 +140,6 @@
       <string>AES + LSB</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="encrypt">
-     <property name="geometry">
-      <rect>
-       <x>720</x>
-       <y>190</y>
-       <width>111</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Encrypt</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>images/encrypt.png</normaloff>images/encrypt.png</iconset>
-     </property>
-    </widget>
     <widget class="QPlainTextEdit" name="plainTextEdit_2">
      <property name="geometry">
       <rect>
@@ -197,14 +163,27 @@
       <string>Select the Method</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>170</y>
+       <width>331</width>
+       <height>34</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>PushButton</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="inputImage">
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>370</y>
-      <width>1001</width>
-      <height>421</height>
+      <y>400</y>
+      <width>1431</width>
+      <height>391</height>
      </rect>
     </property>
     <property name="text">
@@ -214,7 +193,7 @@
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>30</x>
       <y>260</y>
       <width>811</width>
       <height>131</height>
@@ -346,6 +325,40 @@
     </property>
     <property name="text">
      <string>Secret Image Size(Pixel) : </string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="encrypt">
+    <property name="geometry">
+     <rect>
+      <x>860</x>
+      <y>300</y>
+      <width>111</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Encrypt</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>images/encrypt.png</normaloff>images/encrypt.png</iconset>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="decrypt">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>300</y>
+      <width>111</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Decrypt</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>images/decrypt.png</normaloff>images/decrypt.png</iconset>
     </property>
    </widget>
   </widget>
