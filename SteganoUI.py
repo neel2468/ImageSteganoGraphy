@@ -173,10 +173,10 @@ class Stego:
         image_text = Image.new('RGB',(self.original_image_width,self.original_image_height),color=(255,255,255))
         drawer = ImageDraw.Draw(image_text)
         font = ImageFont.truetype("mono.ttf",24)
-        margin = offset = 20
-        for line in textwrap.wrap(text, width=200):
-            drawer.text((margin,offset), line,font=font, align="center",spacing=15,fill=(0,0,0))
-            offset += 20
+        margin = offset = 30
+        for line in textwrap.wrap(text, width=85):
+            drawer.text((margin,offset), line,font=font, align="center",spacing=10,fill=(0,0,0))
+            offset += 30
         
         image_text.save('images/hidden.png')
         return image_text
