@@ -80,10 +80,27 @@ class Ui_MainWindow(object):
             self.key_2.setObjectName("key_2")
 
 
-            self.inputImage = QtWidgets.QLabel(self.centralwidget)
-            self.inputImage.setGeometry(QtCore.QRect(50, 400, 1431, 391))
-            self.inputImage.setText("")
-            self.inputImage.setObjectName("inputImage")
+            self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
+            self.scrollArea.setGeometry(QtCore.QRect(30, 400, 1091, 411))
+            self.scrollArea.setWidgetResizable(True)
+            self.scrollArea.setObjectName("scrollArea")
+            self.scrollAreaWidgetContents = QtWidgets.QWidget()
+            self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1089, 409))
+            self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+            self.inputImage = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+            self.inputImage.setGeometry(QtCore.QRect(0, 10, 1081, 381))
+            self.inputImage.setObjectName("label")
+
+            self.vbox = QtWidgets.QVBoxLayout()
+            self.vbox.addWidget(self.inputImage)
+            self.scrollAreaWidgetContents.setLayout(self.vbox)
+            self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            self.scrollArea.setWidgetResizable(True)
+            self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+            self.scrollArea.setStyleSheet("background-color : rgba(0, 0, 0, 0);border : 1px");
+
             self.widget = QtWidgets.QWidget(self.centralwidget)
             self.widget.setGeometry(QtCore.QRect(30, 260, 811, 131))
             self.widget.setObjectName("widget")
@@ -293,6 +310,8 @@ class Ui_MainWindow(object):
             s1.getOriginalImage(imagepath)
             self.imagepath_2.setText(imagepath);
             self.inputImage.setPixmap(QtGui.QPixmap(imagepath))
+            self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+            self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
             self.inputImage.adjustSize()
             img = Image.open(imagepath)
             width, height = img.size
@@ -303,10 +322,13 @@ class Ui_MainWindow(object):
         imagepath = self.getImage()
         if imagepath != None:
             self.imagepath_3.setText(imagepath);
+            self.inputImage.setPixmap(QtGui.QPixmap(imagepath))
             img = Image.open(imagepath)
             width, height = img.size
             self.StegoImageSize.setText(str(width * height)+" pixels")
             self.StegoImageSize.setStyleSheet("background-color: lightgreen")
+            self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+            self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
     
     def browse_plainText(self):
         fname = QFileDialog.getOpenFileName(None, 'Open file','c:\\', "Image files (*.txt)")
