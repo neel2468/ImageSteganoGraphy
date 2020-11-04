@@ -9,226 +9,15 @@
 
 
 
-from PIL import Image, ImageDraw, ImageFont
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.Qt import QFileDialog, QPixmap, QMessageBox, QDialog
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from LoadingScreen import *
 
-
-import io
-import random
-import string
-import textwrap
-from Crypto.Cipher import AES
-
-class AESStego:
-    
-# Convert encoding data into 8-bit binary
-# form using ASCII value of characters
-    def genData(self,data):
-    
-            # list of binary codes
-            # of given data
-            newd = []
-            for i in data:
-                newd.append(format(ord(b'%c' % i ), '08b'))
-            return newd
-    
-    # Pixels are modified according to the
-    # 8-bit binary data and finally returned
-    def modPix(self,pix, data):
-    
-        datalist = self.genData(data)
-        lendata = len(datalist)
-        imdata = iter(pix)
-    
-        for i in range(lendata):
-    
-            # Extracting 3 pixels at a time
-            pix = [value for value in imdata.__next__()[:3] +
-                                    imdata.__next__()[:3] +
-                                    imdata.__next__()[:3]]
-    
-            # Pixel value should be made
-            # odd for 1 and even for 0
-            for j in range(0, 8):
-                if (datalist[i][j] == '0' and pix[j]% 2 != 0):
-                    pix[j] -= 1
-    
-                elif (datalist[i][j] == '1' and pix[j] % 2 == 0):
-                    if(pix[j] != 0):
-                        pix[j] -= 1
-                    else:
-                        pix[j] += 1
-                    # pix[j] -= 1
-    
-            # Eighth pixel of every set tells
-            # whether to stop ot read further.
-            # 0 means keep reading; 1 means thec
-            # message is over.
-            if (i == lendata - 1):
-                if (pix[-1] % 2 == 0):
-                    if(pix[-1] != 0):
-                        pix[-1] -= 1
-                    else:
-                        pix[-1] += 1
-    
-            else:
-                if (pix[-1] % 2 != 0):
-                    pix[-1] -= 1
-    
-            pix = tuple(pix)
-            yield pix[0:3]
-            yield pix[3:6]
-            yield pix[6:9]
-    
-    def encode_enc(self,newimg, data):
-        w = newimg.size[0]
-        (x, y) = (0, 0)
-    
-        for pixel in self.modPix(newimg.getdata(), data):
-    
-            # Putting modified pixels in the new image
-            newimg.putpixel((x, y), pixel)
-            if (x == w - 1):
-                x = 0
-                y += 1
-            else:
-                x += 1
-    
-    # Encode data into image
-    def encode(self,data,datakey,path):
-        image = Image.open(path, 'r')
-        obj = AES.new(datakey.encode("utf8"), AES.MODE_CFB, 'This is an IV456'.encode("utf8"))
-        data = obj.encrypt(data.encode("utf8"))
-        if (len(data) == 0):
-            raise ValueError('Data is empty')
-    
-        newimg = image.copy()
-        self.encode_enc(newimg, data)
-    
-        newimg.save("images/aes.png", str("images/aes.png".split(".")[1].upper()))
-        return data
-    
-    # Decode the data in the image
-    def decode(self,key,path):
-        
-        image = Image.open(path, 'r')
-    
-        data = b'';
-        imgdata = iter(image.getdata())
-    
-        while (True):
-            pixels = [value for value in imgdata.__next__()[:3] +
-                                    imgdata.__next__()[:3] +
-                                    imgdata.__next__()[:3]]
-    
-            # string of binary data
-            binstr = ''
-    
-            for i in pixels[:8]:
-                if (i % 2 == 0):
-                    binstr += '0'
-                else:
-                    binstr += '1'
-            
-            data = b"".join([data, int(binstr, 2).to_bytes(1, byteorder='big')])
-            if (pixels[-1] % 2 != 0):
-                
-                obj2 = AES.new(key.encode("utf8"), AES.MODE_CFB, 'This is an IV456'.encode("utf8"))
-                plaintext = obj2.decrypt(data)
-                return plaintext.decode("utf-8")
-
-
-class Stego:
-    original_image = {}
-    original_image_width = 0
-    original_image_height = 0
-    encoded_message_image = {}
-    stego_image = {}
-    length = 0
-    password_characters = ''
-
-    def get_random_string(self,length):
-        self.password_characters = string.ascii_letters + string.digits + string.punctuation
-        self.key = ''.join(random.choice(self.password_characters) for i in range(length))
-        return self.key;
-   
-    def getOriginalImage(self,path): 
-        self.original_image = Image.open(path,'r')
-        self.original_image_width = self.original_image.width
-        self.original_image_height = self.original_image.height
-
-
-    def getMsgFromUser(self):
-        secret_message = input("Enter secret message \n")
-        self.generate_encoded_image_from_text(secret_message)
-        
-        
-        
-
-    def generate_encoded_image_from_text(self,text):
-        image_text = Image.new('RGB',(self.original_image_width,self.original_image_height),color=(255,255,255))
-        drawer = ImageDraw.Draw(image_text)
-        font = ImageFont.truetype("mono.ttf",24)
-        margin = offset = 30
-        for line in textwrap.wrap(text, width=85):
-            drawer.text((margin,offset), line,font=font, align="center",spacing=10,fill=(0,0,0))
-            offset += 30
-        
-        image_text.save('images/hidden.png')
-        return image_text
-
-    def hide(self):
-        self.stego_image = Image.new('RGB',(self.original_image_width,self.original_image_height))
-        for x in range(self.original_image_width):
-            for y in range(self.original_image_height):
-                coord = x,y
-                red = self.original_image.getpixel(coord)[0]
-                green = self.original_image.getpixel(coord)[1]
-                blue = self.original_image.getpixel(coord)[2]
-                
-                if self.encoded_message_image.getpixel(coord)[0] == 0:
-                    if red == 0:
-                        red = red + 1
-                        self.stego_image.putpixel(coord,(red,green,blue))
-                    else:
-                        red = red - 1
-                        self.stego_image.putpixel(coord,(red,green,blue))
-                else:
-                    self.stego_image.putpixel(coord,(red,green,blue))
-
-        self.stego_image.save('images/o1.png')
-
-    
-    def unhide(self,originalPath, stegoPath):
-       
-        
-        output_image = Image.open(stegoPath,'r')
-        original_image = Image.open(originalPath,'r')
-        decoded_msg_image = Image.new('RGB',(original_image.width,original_image.height))
-        for x in range(self.original_image_width):
-            for y in range(self.original_image_height):
-                coord = x,y
-                red = output_image.getpixel(coord)[0]
-                if red - self.original_image.getpixel(coord)[0] == 1 or self.original_image.getpixel(coord)[0] - red == 1:
-                    decoded_msg_image.putpixel(coord,(0,0,0))
-                else:
-                    decoded_msg_image.putpixel(coord,(255,255,255))
-
-        decoded_msg_image.save('images/message.png')
-        
-    def image_to_byte_array(self,image:Image):
-      imgByteArr = io.BytesIO()
-      image.save(imgByteArr, format=image.format)
-      imgByteArr = imgByteArr.getvalue()
-      return imgByteArr
-
-    
-        
-   
+from AESStego import *
+from Stego import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -491,7 +280,7 @@ class Ui_MainWindow(object):
         
     def get_key(self):
         if self.radioButton.isChecked():
-            key = s1.get_random_string(16)
+            key = s2.get_random_string(16)
             self.keyTextBox.setText(key)
         
     def enable_disableButton(self):
