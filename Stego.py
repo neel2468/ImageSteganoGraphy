@@ -30,7 +30,7 @@ class Stego:
         drawer = ImageDraw.Draw(image_text)
         font = ImageFont.truetype("mono.ttf",24)
         margin = offset = 30
-        for line in textwrap.wrap(text, width=85):
+        for line in textwrap.wrap(text, width=85 ):
             drawer.text((margin,offset), line,font=font, align="center",spacing=10,fill=(0,0,0))
             offset += 30
 

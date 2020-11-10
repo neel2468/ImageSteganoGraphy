@@ -177,9 +177,18 @@ class Ui_MainWindow(object):
 
             self.radioButton_2.clicked.connect(self.enable_disableButton)
             self.radioButton.clicked.connect(self.enable_disableButton)
+            
+            self.plainTextEdit.textChanged.connect(self.limitCharacters)
 
             self.retranslateUi(MainWindow)
             QtCore.QMetaObject.connectSlotsByName(MainWindow)
+            
+            
+    def limitCharacters(self):
+            if len(self.plainTextEdit.toPlainText()) > 200:
+                 QMessageBox.about(None, "Error", "Not more than 200 characters allowed")
+                 
+                
     def retranslateUi(self, MainWindow):
             _translate = QtCore.QCoreApplication.translate
             MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
