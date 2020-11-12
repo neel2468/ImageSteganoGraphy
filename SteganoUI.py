@@ -18,6 +18,7 @@ from LoadingScreen import *
 
 from AESStego import *
 from Stego import *
+from ImagetoString import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -185,8 +186,12 @@ class Ui_MainWindow(object):
             
             
     def limitCharacters(self):
-            if len(self.plainTextEdit.toPlainText()) > 200:
-                 QMessageBox.about(None, "Error", "Not more than 200 characters allowed")
+            if len(self.plainTextEdit.toPlainText()) > 1000:
+                self.plainTextEdit.setPlainText(self.plainTextEdit.toPlainText()[0:1000])
+                QMessageBox.about(None, "Error", "Not more than 1000 characters allowed")
+
+
+
                  
                 
     def retranslateUi(self, MainWindow):
@@ -205,14 +210,12 @@ class Ui_MainWindow(object):
             self.pushButton.setText(_translate("MainWindow", "Browse OriginalImage"))
             self.pushButton_3.setText(_translate("MainWindow", "Browse StegoImage"))
             self.radioButton.setText(_translate("MainWindow", "AES + LSB"))
-            self.radioButton_2.setText(_translate("MainWindow", "New Algo"))
+            self.radioButton_2.setText(_translate("MainWindow", "Stego RBG"))
             self.plainImageSize_2.setText(_translate("MainWindow", "Original Image Size : "))
             self.StegoImageSize_2.setText(_translate("MainWindow", "Stego Image Size : " ))
             self.secretMessageSize.setText(_translate("MainWindow", "Secret Image Size : "))
 
     def encrypt_InputImage(self):
-        #self.loading = LoadingScreen()
-        #self.loading.startLoading()
         self.progressBar.setFormat("Encrypting...")
         self.step = 0
         self.progressBar.setValue(self.step)
@@ -260,12 +263,10 @@ class Ui_MainWindow(object):
             self.progressBar.setValue(self.step+75)
             self.plainTextEdit_2.setPlainText(str(data))
             self.progressBar.setValue(self.step+100)
-        #self.loading.stopLoading()
         self.progressBar.setFormat("Encrypted 100%..")
         QMessageBox.about(None, "Info", "Encryption is successful")
         
     def show_OutputImage(self):
-        #self.loading = LoadingScreen()
         self.progressBar.setFormat("Decrypting...")
         self.step = 0
         if self.radioButton_2.isChecked():
@@ -278,14 +279,20 @@ class Ui_MainWindow(object):
             self.progressBar.setValue(self.step+20)
             s1.unhide(self.imagepath_2.text(),self.imagepath_3.text())
             self.progressBar.setValue(self.step+50)
-            self.inputImage.setPixmap(QtGui.QPixmap('images/message.png'))
-            self.progressBar.setValue(self.step+60)
+            textVal = s3.getString('images/message.png')
+            #self.plainTextEdit.setPlainText(textVal)
+            self.inputImage.setText(textVal)
+            self.progressBar.setValue(self.step+65)
+            self.inputImage.setWordWrap(True)
             self.inputImage.adjustSize()
-            img = Image.open('images/message.png')
-            width, height = img.size
+            #self.inputImage.setPixmap(QtGui.QPixmap('images/message.png'))
+            #self.progressBar.setValue(self.step+60)
+            #self.inputImage.adjustSize()
+            #img = Image.open('images/message.png')
+            #width, height = img.size
             self.progressBar.setValue(self.step+75)
-            self.plainText_4.setText(str(width * height)+" pixels")
-            self.plainText_4.setStyleSheet("background-color: lightgreen")
+            #self.plainText_4.setText(str(width * height)+" pixels")
+            #self.plainText_4.setStyleSheet("background-color: lightgreen")
             self.progressBar.setValue(self.step+100)
 
         if self.radioButton.isChecked():
@@ -361,6 +368,8 @@ class Ui_MainWindow(object):
             self.plainText_4.setText("")
             self.imagepath_2.setText("")
             self.imagepath_3.setText("")
+            self.inputImage.setText("")
+            self.scrollArea.setStyleSheet("background-color : rgba(0, 0, 0, 0);border : 1px");
             self.plainImageSize.setStyleSheet("")
             self.StegoImageSize.setStyleSheet("")
             self.plainText_4.setStyleSheet("")
@@ -377,6 +386,8 @@ class Ui_MainWindow(object):
             self.imagepath_2.setText("")
             self.imagepath_3.setText("")
             self.plainText_4.setText("")
+            self.inputImage.setText("")
+            self.scrollArea.setStyleSheet("background-color : rgba(0, 0, 0, 0);border : 1px");
             self.plainImageSize.setStyleSheet("")
             self.StegoImageSize.setStyleSheet("")
             self.plainText_4.setStyleSheet("")
@@ -393,6 +404,7 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     s1 = Stego()
     s2 = AESStego()
+    s3 = ImagetoString()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
