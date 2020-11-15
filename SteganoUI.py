@@ -19,10 +19,11 @@ from LoadingScreen import *
 from AESStego import *
 from Stego import *
 from ImagetoString import *
+from ImagetoString import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-            MainWindow.setObjectName("MainWindow")
+            MainWindow.setObjectName("Stegano+Crypto ")
             MainWindow.resize(1519, 858)
             self.centralwidget = QtWidgets.QWidget(MainWindow)
             self.centralwidget.setObjectName("centralwidget")
@@ -132,15 +133,15 @@ class Ui_MainWindow(object):
             self.plainText_4.setGeometry(QtCore.QRect(1290, 170, 141, 31))
             self.plainText_4.setText("")
             self.plainText_4.setObjectName("plainText_4")
-            self.plainImageSize_2 = QtWidgets.QLabel(self.centralwidget)
-            self.plainImageSize_2.setGeometry(QtCore.QRect(1100, 90, 191, 31))
-            self.plainImageSize_2.setObjectName("plainImageSize_2")
-            self.StegoImageSize_2 = QtWidgets.QLabel(self.centralwidget)
-            self.StegoImageSize_2.setGeometry(QtCore.QRect(1100, 130, 191, 31))
-            self.StegoImageSize_2.setObjectName("StegoImageSize_2")
-            self.secretMessageSize = QtWidgets.QLabel(self.centralwidget)
-            self.secretMessageSize.setGeometry(QtCore.QRect(1100, 170, 181, 31))
-            self.secretMessageSize.setObjectName("secretMessageSize")
+            #self.plainImageSize_2 = QtWidgets.QLabel(self.centralwidget)
+            #self.plainImageSize_2.setGeometry(QtCore.QRect(1100, 90, 191, 31))
+            #self.plainImageSize_2.setObjectName("plainImageSize_2")
+            #self.StegoImageSize_2 = QtWidgets.QLabel(self.centralwidget)
+            #self.StegoImageSize_2.setGeometry(QtCore.QRect(1100, 130, 191, 31))
+            #self.StegoImageSize_2.setObjectName("StegoImageSize_2")
+            #self.secretMessageSize = QtWidgets.QLabel(self.centralwidget)
+            #self.secretMessageSize.setGeometry(QtCore.QRect(1100, 170, 181, 31))
+            #self.secretMessageSize.setObjectName("secretMessageSize")
 
             MainWindow.setCentralWidget(self.centralwidget)
             self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -210,10 +211,10 @@ class Ui_MainWindow(object):
             self.pushButton.setText(_translate("MainWindow", "Browse OriginalImage"))
             self.pushButton_3.setText(_translate("MainWindow", "Browse StegoImage"))
             self.radioButton.setText(_translate("MainWindow", "AES + LSB"))
-            self.radioButton_2.setText(_translate("MainWindow", "Stego RBG"))
-            self.plainImageSize_2.setText(_translate("MainWindow", "Original Image Size : "))
-            self.StegoImageSize_2.setText(_translate("MainWindow", "Stego Image Size : " ))
-            self.secretMessageSize.setText(_translate("MainWindow", "Secret Image Size : "))
+            self.radioButton_2.setText(_translate("MainWindow", "Stego RGB"))
+            #self.plainImageSize_2.setText(_translate("MainWindow", "Original Image Size : "))
+            #self.StegoImageSize_2.setText(_translate("MainWindow", "Stego Image Size : " ))
+            #self.secretMessageSize.setText(_translate("MainWindow", "Secret Image Size : "))
 
     def encrypt_InputImage(self):
         self.progressBar.setFormat("Encrypting...")
@@ -232,12 +233,15 @@ class Ui_MainWindow(object):
             s1.hide()
             self.progressBar.setValue(self.step+55)
             self.inputImage.setPixmap(QtGui.QPixmap('images/o1.png'))
-            self.inputImage.adjustSize()
-            img = Image.open('images/o1.png')
-            width, height = img.size
             self.progressBar.setValue(self.step+75)
-            self.StegoImageSize.setText(str(width * height)+" pixels")
-            self.StegoImageSize.setStyleSheet("background-color: lightgreen")
+            self.inputImage.adjustSize()
+            self.plainTextEdit.setPlainText("")
+            #size = os.path.getsize('images/o1.png')
+            #img = Image.open('images/o1.png')
+            #width, height = img.size
+            #self.StegoImageSize.setText(str(width * height)+" pixels")
+            #self.StegoImageSize.setText(str(size))
+            #self.StegoImageSize.setStyleSheet("background-color: lightgreen")
             self.progressBar.setValue(self.step+100)
 
         if self.radioButton.isChecked():
@@ -253,12 +257,14 @@ class Ui_MainWindow(object):
             self.progressBar.setValue(self.step+5)
             data = s2.encode(self.plainTextEdit.toPlainText(),self.keyTextBox.text(),self.imagepath_2.text())
             self.progressBar.setValue(self.step+20)
-            img = Image.open('images/aes.png')
-            width, height = img.size
+            #size = os.path.getsize('images/aes.png')
+            #img = Image.open('images/aes.png')
+            #width, height = img.size
             self.progressBar.setValue(self.step+35)
-            self.StegoImageSize.setText(str(width * height)+" pixels")
+            #self.StegoImageSize.setText(str(width * height)+" pixels")
+            #self.StegoImageSize.setText(str(size))
             self.progressBar.setValue(self.step+50)
-            self.StegoImageSize.setStyleSheet("background-color: lightgreen")
+           # self.StegoImageSize.setStyleSheet("background-color: lightgreen")
             self.plainTextEdit.setPlainText("")
             self.progressBar.setValue(self.step+75)
             self.plainTextEdit_2.setPlainText(str(data))
@@ -329,20 +335,24 @@ class Ui_MainWindow(object):
             self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
             self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
             self.inputImage.adjustSize()
-            img = Image.open(imagepath)
-            width, height = img.size
-            self.plainImageSize.setText(str(width * height)+" pixels")
-            self.plainImageSize.setStyleSheet("background-color: lightgreen")
+            #size = os.path.getsize(imagepath)
+            #img = Image.open(imagepath)
+            #width, height = img.size
+            #self.plainImageSize.setText(str(width * height)+" pixels")
+            #self.plainImageSize.setText(str(size))
+            #self.plainImageSize.setStyleSheet("background-color: lightgreen")
     
     def stegoImagePath(self):
         imagepath = self.getImage()
         if imagepath != None:
             self.imagepath_3.setText(imagepath);
             self.inputImage.setPixmap(QtGui.QPixmap(imagepath))
-            img = Image.open(imagepath)
-            width, height = img.size
-            self.StegoImageSize.setText(str(width * height)+" pixels")
-            self.StegoImageSize.setStyleSheet("background-color: lightgreen")
+            #size = os.path.getsize(imagepath)
+            #img = Image.open(imagepath)
+            #width, height = img.size
+            #self.StegoImageSize.setText(str(width * height)+" pixels")
+            #self.StegoImageSize.setText(str(size))
+            #self.StegoImageSize.setStyleSheet("background-color: lightgreen")
             self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
             self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
     

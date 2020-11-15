@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 import io
+import os
 
 import textwrap
 
@@ -57,6 +58,8 @@ class Stego:
                     self.stego_image.putpixel(coord,(red,green,blue))
 
         self.stego_image.save('images/o1.png')
+        os.remove('images/hidden.png')
+
 
 
     def unhide(self,originalPath, stegoPath):
